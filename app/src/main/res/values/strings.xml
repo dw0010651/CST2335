@@ -2,4 +2,7 @@
     <string name="app_name">Lab1</string>
     <string name="hello_message">Hello World!</string>
     <string name="ButtonText">I\'m a button</string>
+    <string name="loginText">Login</string>
+    <string name="passwardText">Password</string>
+    <string name="question">What does this do?</string>
 </resources>

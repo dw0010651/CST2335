@@ -2,4 +2,6 @@
     <string name="app_name">Lab1</string>
     <string name="hello_message">안녕하세요! 반갑습니다!</string>
     <string name="ButtonText">버튼클릭!</string>
+    <string name="loginText">로그인</string>
+    <string name="passwardText">패스워드</string>
 </resources>
