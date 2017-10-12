@@ -19,7 +19,7 @@ public class StartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        Log.i(ACTIVITY_NAME,"In onCreate()" );
+        Log.i(ACTIVITY_NAME,"In onCreate(dd)" );
             button = (Button)findViewById(R.id.button);
                 button.setOnClickListener(new View.OnClickListener(){
                     @Override
