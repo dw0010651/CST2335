@@ -1,9 +1,12 @@
 package com.example.jaykang.androidlabs;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,52 +16,88 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
 
 
 public class ChatWindow extends Activity {
-    protected static final String ACTIVITY_NAME = "ChatWindow";
-    protected ListView listView;
-    protected EditText editText;
-    protected Button send;
-    protected ArrayList<String> messageStore;
-
+    static final String ACTIVITY_NAME = "ChatWindow";
+    ListView listView;
+    EditText editText;
+    Button send;
+    ArrayList<String> messageStore;
+    SQLiteDatabase db;
+    ChatAdapter messageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
 
-        listView = (ListView)findViewById(R.id.listViewChat);
-
-
-
+        listView = (ListView) findViewById(R.id.listViewChat);
         editText = (EditText) findViewById(R.id.message);
         send = (Button) findViewById(R.id.send);
         messageStore = new ArrayList<String>();
+        messageAdapter = new ChatAdapter(this);
+        listView.setAdapter(messageAdapter);
 
-        final ChatAdaper messageAdaper = new ChatAdaper(this);
-        listView.setAdapter(messageAdaper);
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                messageStore.add(editText.getText().toString());
-//                messageAdaper.notifyDataSetChanged();
-                editText.setText("");
-                Log.i(ACTIVITY_NAME,"They clicked on send");
-            }
-        });
+        ChatDatabaseHelper cdHelp = new ChatDatabaseHelper(getApplicationContext());
+        db = cdHelp.getWritableDatabase();
+
+        String sql = "SELECT * FROM " + cdHelp.TABLE_NAME;
+        Cursor cursor = db.rawQuery(sql, null);
+
+        cursor.moveToFirst();
+
+
+        while (!cursor.isAfterLast()) {
+
+            Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + cursor.getString(cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE)));
+            String text = cursor.getString(cursor.getColumnIndex(cdHelp.KEY_MESSAGE));
+            messageStore.add(text);
+            listView.setAdapter(messageAdapter);
+            cursor.moveToNext();
+
+        }
+
+        Log.i(ACTIVITY_NAME, "Cursor's column count=" + cursor.getColumnCount());
+
+        for (int i = 0; i < cursor.getColumnCount(); i++) {
+            Log.i(ACTIVITY_NAME, cursor.getColumnName(i));
+
+        }
+
+
+        final ContentValues content = new ContentValues();
+
+
+        send.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        String editMsg = editText.getText().toString();
+                        messageStore.add(editMsg);
+                        content.put("message", editMsg);
+                        db.insert(ChatDatabaseHelper.TABLE_NAME, null, content);
+                        messageAdapter.notifyDataSetChanged();
+                        editText.setText("");
+                        Log.i(ACTIVITY_NAME, "They clicked on send");
+                    }
+                });
+    }
+
+    public void onDestroy() {
+
+        Log.i(ACTIVITY_NAME, "In onDestroy()");
+        super.onDestroy();
+        db.close();
+
     }
 
 
+    private class ChatAdapter extends ArrayAdapter<String> {
 
-
-    private class ChatAdaper extends ArrayAdapter<String> {
-
-        public ChatAdaper(Context context) {
+        public ChatAdapter(Context context) {
             super(context, 0);
         }
 
