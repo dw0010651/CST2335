@@ -17,8 +17,6 @@ import static com.example.jaykang.androidlabs.ChatWindow.ACTIVITY_NAME;
         protected static final String KEY_ID  = "keyId";
         protected static final String KEY_MESSAGE  = "message";
 
-
-
         public ChatDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
