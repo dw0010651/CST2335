@@ -42,48 +42,54 @@ public class ChatWindow extends Activity {
         messageAdapter = new ChatAdapter(this);
         listView.setAdapter(messageAdapter);
 
-        ChatDatabaseHelper cdHelp = new ChatDatabaseHelper(getApplicationContext());
-        db = cdHelp.getWritableDatabase();
-
-        String sql = "SELECT * FROM " + cdHelp.TABLE_NAME;
-        Cursor cursor = db.rawQuery(sql, null);
-
-        cursor.moveToFirst();
+        try {
+            ChatDatabaseHelper cdHelp = new ChatDatabaseHelper(this);
+            db = cdHelp.getWritableDatabase();
 
 
-        while (!cursor.isAfterLast()) {
+            String sql = "SELECT * FROM " + cdHelp.TABLE_NAME;
+            Cursor cursor = db.rawQuery(sql, null);
 
-            Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + cursor.getString(cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE)));
-            String text = cursor.getString(cursor.getColumnIndex(cdHelp.KEY_MESSAGE));
-            messageStore.add(text);
-            listView.setAdapter(messageAdapter);
-            cursor.moveToNext();
+            cursor.moveToFirst();
+
+
+            while (!cursor.isAfterLast()) {
+
+                Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + cursor.getString(cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE)));
+                String text = cursor.getString(cursor.getColumnIndex(cdHelp.KEY_MESSAGE));
+                messageStore.add(text);
+                listView.setAdapter(messageAdapter);
+                cursor.moveToNext();
+
+            }
+
+            Log.i(ACTIVITY_NAME, "Cursor's column count=" + cursor.getColumnCount());
+
+            for (int i = 0; i < cursor.getColumnCount(); i++) {
+                Log.i(ACTIVITY_NAME, cursor.getColumnName(i));
+
+            }
+
+
+            final ContentValues content = new ContentValues();
+
+
+            send.setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View view) {
+                            String editMsg = editText.getText().toString();
+                            messageStore.add(editMsg);
+                            content.put("message", editMsg);
+                            db.insert(ChatDatabaseHelper.TABLE_NAME, null, content);
+                            messageAdapter.notifyDataSetChanged();
+                            editText.setText("");
+                            Log.i(ACTIVITY_NAME, "They clicked on send");
+                        }
+                    });
+        } catch (Exception e){
+            e.getStackTrace();
 
         }
-
-        Log.i(ACTIVITY_NAME, "Cursor's column count=" + cursor.getColumnCount());
-
-        for (int i = 0; i < cursor.getColumnCount(); i++) {
-            Log.i(ACTIVITY_NAME, cursor.getColumnName(i));
-
-        }
-
-
-        final ContentValues content = new ContentValues();
-
-
-        send.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View view) {
-                        String editMsg = editText.getText().toString();
-                        messageStore.add(editMsg);
-                        content.put("message", editMsg);
-                        db.insert(ChatDatabaseHelper.TABLE_NAME, null, content);
-                        messageAdapter.notifyDataSetChanged();
-                        editText.setText("");
-                        Log.i(ACTIVITY_NAME, "They clicked on send");
-                    }
-                });
     }
 
     public void onDestroy() {

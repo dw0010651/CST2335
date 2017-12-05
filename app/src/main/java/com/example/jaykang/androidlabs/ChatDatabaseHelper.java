@@ -13,7 +13,7 @@ import static com.example.jaykang.androidlabs.ChatWindow.ACTIVITY_NAME;
         protected static final String ACTIVITY_NAME = "ChatDatabaseHelper";
         private static final String DATABASE_NAME = "Messages.db";
         protected static final String TABLE_NAME = "chatData";
-        private static final int DATABASE_VERSION =2;
+        private static final int DATABASE_VERSION =4;
         protected static final String KEY_ID  = "keyId";
         protected static final String KEY_MESSAGE  = "message";
 
