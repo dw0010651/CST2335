@@ -30,7 +30,7 @@ public class StartActivity extends Activity {
             }
         });
 
-        start_button = (Button) findViewById(R.id.start_button);
+        start_button = (Button)findViewById(R.id.start_button);
         start_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
