@@ -10,9 +10,9 @@
         android:id="@+id/message_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="0.43"
         android:gravity="right"
-        android:text="TextView"
-        android:layout_weight="0.43" />
+        android:text="TextView" />
 
     <ImageView
         android:id="@+id/imageView2"

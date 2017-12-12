@@ -18,7 +18,6 @@ public class LoginActivity extends Activity {
     protected static final String ACTIVITY_NAME = "LoginActivity";
     protected static final String FILE_NAME  =  "com.example.app";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
