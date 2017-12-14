@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lab1</string>
+    <string name="app_name">Lab6</string>
     <string name="hello_message">Hello World!</string>
     <string name="ButtonText">I\'m a button</string>
     <string name="loginText">Login</string>
@@ -13,4 +13,11 @@
     <string name="start_chart">Start Chart</string>
     <string name="send">Send</string>
     <string name="message"></string>
+    <string name="LogMesStartChat">User clicked Start Chat</string>
+    <string name="btnWeatherTxt">Weather Forecast</string>
+    <string name="currTem">Current Temperature</string>
+    <string name="minTem">Min Temperature</string>
+    <string name="maxTem">Max Temperature</string>
+    <string name="toast_alt1">ListItemsActivity passed: My information to share</string>
+    <string name="toast_alt2">Returned to StartActivity.onActivityResult</string>
 </resources>
